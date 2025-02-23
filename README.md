@@ -64,8 +64,8 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
 5. Ensure that the selectors for the input fields and buttons are correct as per the details obtained from the developer tools:
 
    ```javascript
-   const walletSelector = '#walletAddress'; // Update the selector to match the correct element
-   const claimButtonSelector = '#claimButton'; // Update the selector to match the correct element
+   const walletSelector = 'input[name="wallet_address"]'; // Update the selector to match the correct element
+   const claimButtonSelector = 'button[type="submit"]'; // Update the selector to match the correct element
    ```
 
 ## Usage
