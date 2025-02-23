@@ -1,12 +1,13 @@
 # Auto Claim Faucet Script
 
-This project provides an automation script to claim Ethereum Sepolia faucet using the API provided by the [Google Cloud Web3 Portal](https://cloud.google.com/application/web3/faucet/ethereum/sepolia).
+This project provides an automation script to claim Ethereum Sepolia faucet using Puppeteer.
 
 ## Prerequisites
 
 - Node.js and npm installed on your system.
 - An Ethereum wallet address.
-- The URL endpoint and payload details obtained from the browser's developer tools.
+- A valid reCAPTCHA token.
+- The URL endpoint and element selectors obtained from the browser's developer tools.
 
 ## Installation
 
@@ -32,19 +33,21 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
 
 1. Open the `auto_faucet.js` file.
 
-2. Replace the placeholder values with your actual Ethereum wallet address and any other necessary data:
+2. Replace the placeholder values with your actual Ethereum wallet address and reCAPTCHA token:
 
    ```javascript
-   const postData = {
-       // Replace with the actual payload details
-       "wallet_address": "your_wallet_address_here"
-   };
+   const walletAddress = 'your_wallet_address_here';
+   const recaptchaToken = 'your_recaptcha_token_here'; // Replace with a valid reCAPTCHA token
    ```
 
-3. Ensure that the `faucetUrl` is correct as per the details obtained from the developer tools:
+3. Ensure that the selectors for the input fields and buttons are correct as per the details obtained from the developer tools:
 
    ```javascript
-   const faucetUrl = 'https://cloud.google.com/application/web3/_/Web3Portal/data/batchexecute?...'; // Replace with the actual endpoint URL
+   await page.type('#walletAddress', walletAddress);
+   await page.evaluate((token) => {
+       document.querySelector('#recaptcha-token').value = token;
+   }, recaptchaToken);
+   await page.click('#claimButton');
    ```
 
 ## Usage
@@ -55,11 +58,11 @@ To run the script, use the following command:
 npm start
 ```
 
-The script will send a POST request to the specified API endpoint to claim the faucet for the provided Ethereum wallet address.
+The script will open a browser, navigate to the faucet page, fill in the wallet address and reCAPTCHA token, and click the claim button.
 
 ## Notes
 
-- Ensure that the URL endpoint and payload details are accurate. You can use the browser's developer tools to inspect network requests and find the necessary information.
+- Ensure that the element selectors are accurate. You can use the browser's developer tools to inspect the HTML and find the necessary information.
 - This script is intended for educational purposes and should be used responsibly.
 - Always comply with the terms of service and usage policies of the services you are interacting with.
 
