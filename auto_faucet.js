@@ -14,25 +14,34 @@ async function claimFaucet(email, walletAddress) {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
-    await page.goto(faucetUrl);
+    try {
+        await page.goto(faucetUrl);
 
-    // Isi alamat wallet address
-    await page.type('#walletAddress', walletAddress);
+        // Isi alamat wallet address
+        const walletSelector = '#walletAddress'; // Perbarui selektor sesuai dengan elemen yang benar
+        await page.waitForSelector(walletSelector, { timeout: 10000 });
+        await page.type(walletSelector, walletAddress);
 
-    // Isi token reCAPTCHA
-    await page.evaluate((token) => {
-        document.querySelector('#recaptcha-token').value = token;
-    }, recaptchaToken);
+        // Isi token reCAPTCHA
+        const recaptchaSelector = '#recaptcha-token';
+        await page.evaluate((token, selector) => {
+            document.querySelector(selector).value = token;
+        }, recaptchaToken, recaptchaSelector);
 
-    // Klik tombol klaim faucet
-    await page.click('#claimButton');
+        // Klik tombol klaim faucet
+        const claimButtonSelector = '#claimButton'; // Perbarui selektor sesuai dengan elemen yang benar
+        await page.waitForSelector(claimButtonSelector, { timeout: 10000 });
+        await page.click(claimButtonSelector);
 
-    // Tunggu beberapa detik untuk memastikan permintaan diproses
-    await page.waitForTimeout(5000);
+        // Tunggu beberapa detik untuk memastikan permintaan diproses
+        await page.waitForTimeout(10000);
 
-    await browser.close();
-
-    console.log(`Faucet claim successful for ${email}`);
+        console.log(`Faucet claim successful for ${email}`);
+    } catch (error) {
+        console.error(`Error claiming faucet for ${email}:`, error);
+    } finally {
+        await browser.close();
+    }
 }
 
 async function processAccounts() {
