@@ -1,0 +1,12 @@
+{
+  "name": "auto-faucet",
+  "version": "1.0.0",
+  "description": "Automate Ethereum Sepolia Faucet claim using API",
+  "main": "auto_faucet.js",
+  "scripts": {
+    "start": "node auto_faucet.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
