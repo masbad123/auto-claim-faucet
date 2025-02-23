@@ -15,4 +15,5 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
 2. Navigate to the project directory.
 
    ```sh
+  github https://github.com/masbad123/auto-claim-faucet.git
    cd auto-faucet
