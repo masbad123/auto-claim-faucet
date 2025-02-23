@@ -1,6 +1,15 @@
 {
-  "lastClaimTimes": {
-    "example@gmail.com": "2025-02-20T10:00:00Z"
-  },
+  "accounts": [
+    {
+      "email": "example1@gmail.com",
+      "walletAddress": "wallet_address_1",
+      "lastClaimTime": "2025-02-20T10:00:00Z"
+    },
+    {
+      "email": "example2@gmail.com",
+      "walletAddress": "wallet_address_2",
+      "lastClaimTime": "2025-02-20T10:00:00Z"
+    }
+  ],
   "delayInHours": 24
 }
