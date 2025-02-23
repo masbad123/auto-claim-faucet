@@ -3,49 +3,57 @@ const fs = require('fs');
 const path = require('path');
 
 const faucetUrl = 'https://cloud.google.com/application/web3/faucet/ethereum/sepolia';
-const walletAddress = 'your_wallet_address_here';
 const recaptchaToken = 'your_recaptcha_token_here'; // Ganti dengan token reCAPTCHA yang valid
-const email = 'your_email_here'; // Ganti dengan email yang digunakan
 
 const configPath = path.resolve(__dirname, 'config.json');
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
 const delayInMilliseconds = config.delayInHours * 60 * 60 * 1000;
 
-async function claimFaucet() {
-    const lastClaimTime = new Date(config.lastClaimTimes[email] || 0);
-    const now = new Date();
+async function claimFaucet(email, walletAddress) {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
 
-    if (now - lastClaimTime >= delayInMilliseconds) {
-        const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
+    await page.goto(faucetUrl);
 
-        await page.goto(faucetUrl);
+    // Isi alamat wallet address
+    await page.type('#walletAddress', walletAddress);
 
-        // Isi alamat wallet address
-        await page.type('#walletAddress', walletAddress);
+    // Isi token reCAPTCHA
+    await page.evaluate((token) => {
+        document.querySelector('#recaptcha-token').value = token;
+    }, recaptchaToken);
 
-        // Isi token reCAPTCHA
-        await page.evaluate((token) => {
-            document.querySelector('#recaptcha-token').value = token;
-        }, recaptchaToken);
+    // Klik tombol klaim faucet
+    await page.click('#claimButton');
 
-        // Klik tombol klaim faucet
-        await page.click('#claimButton');
+    // Tunggu beberapa detik untuk memastikan permintaan diproses
+    await page.waitForTimeout(5000);
 
-        // Tunggu beberapa detik untuk memastikan permintaan diproses
-        await page.waitForTimeout(5000);
+    await browser.close();
 
-        await browser.close();
-
-        // Perbarui timestamp terakhir klaim
-        config.lastClaimTimes[email] = now.toISOString();
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-
-        console.log('Faucet claim successful');
-    } else {
-        console.log('Delay not yet met. Please wait before claiming again.');
-    }
+    console.log(`Faucet claim successful for ${email}`);
 }
 
-claimFaucet();
+async function processAccounts() {
+    const now = new Date();
+
+    for (const account of config.accounts) {
+        const lastClaimTime = new Date(account.lastClaimTime || 0);
+
+        if (now - lastClaimTime >= delayInMilliseconds) {
+            await claimFaucet(account.email, account.walletAddress);
+
+            // Perbarui timestamp terakhir klaim
+            account.lastClaimTime = now.toISOString();
+        } else {
+            const remainingTime = delayInMilliseconds - (now - lastClaimTime);
+            console.log(`Delay not yet met for ${account.email}. Please wait ${Math.ceil(remainingTime / (1000 * 60 * 60))} hours before claiming again.`);
+        }
+    }
+
+    // Simpan pembaruan ke file konfigurasi
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
+
+processAccounts();
