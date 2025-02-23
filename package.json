@@ -1,12 +1,12 @@
 {
-  "name": "auto-faucet",
+  "name": "auto-claim-faucet",
   "version": "1.0.0",
-  "description": "Automate Ethereum Sepolia Faucet claim using API",
+  "description": "Automate Ethereum Sepolia Faucet claim using Puppeteer",
   "main": "auto_faucet.js",
   "scripts": {
     "start": "node auto_faucet.js"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "puppeteer": "^13.0.0"
   }
 }
