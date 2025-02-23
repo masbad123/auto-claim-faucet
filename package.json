@@ -1,12 +1,15 @@
 {
-  "name": "auto-claim-faucet",
-  "version": "1.0.0",
-  "description": "Automate Ethereum Sepolia Faucet claim using Puppeteer with delay per email",
-  "main": "auto_faucet.js",
-  "scripts": {
-    "start": "node auto_faucet.js"
-  },
-  "dependencies": {
-    "puppeteer": "^13.0.0"
-  }
+  "accounts": [
+    {
+      "email": "example1@gmail.com",
+      "walletAddress": "wallet_address_1",
+      "lastClaimTime": "2025-02-20T10:00:00Z"
+    },
+    {
+      "email": "example2@gmail.com",
+      "walletAddress": "wallet_address_2",
+      "lastClaimTime": "2025-02-20T10:00:00Z"
+    }
+  ],
+  "delayInHours": 24
 }
