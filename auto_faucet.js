@@ -18,7 +18,7 @@ async function claimFaucet(email, walletAddress) {
         await page.goto(faucetUrl);
 
         // Isi alamat wallet address
-        const walletSelector = '#walletAddress'; // Perbarui selektor sesuai dengan elemen yang benar
+        const walletSelector = 'input[name="wallet_address"]'; // Perbarui selektor sesuai dengan elemen yang benar
         await page.waitForSelector(walletSelector, { timeout: 10000 });
         await page.type(walletSelector, walletAddress);
 
@@ -29,7 +29,7 @@ async function claimFaucet(email, walletAddress) {
         }, recaptchaToken, recaptchaSelector);
 
         // Klik tombol klaim faucet
-        const claimButtonSelector = '#claimButton'; // Perbarui selektor sesuai dengan elemen yang benar
+        const claimButtonSelector = 'button[type="submit"]'; // Perbarui selektor sesuai dengan elemen yang benar
         await page.waitForSelector(claimButtonSelector, { timeout: 10000 });
         await page.click(claimButtonSelector);
 
