@@ -1,7 +1,7 @@
 {
   "name": "auto-claim-faucet",
   "version": "1.0.0",
-  "description": "Automate Ethereum Sepolia Faucet claim using Puppeteer",
+  "description": "Automate Ethereum Sepolia Faucet claim using Puppeteer with delay per email",
   "main": "auto_faucet.js",
   "scripts": {
     "start": "node auto_faucet.js"
