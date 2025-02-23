@@ -31,7 +31,7 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
 
 ## Configuration
 
-1. Open the `config.json` file.
+1. Open the `src/config.json` file.
 
 2. Add your email addresses, wallet addresses, and set the initial timestamps and delay:
 
@@ -53,7 +53,7 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
    }
    ```
 
-3. Open the `auto_faucet.js` file.
+3. Open the `src/auto_faucet.js` file.
 
 4. Replace the placeholder value with your actual reCAPTCHA token:
 
@@ -64,11 +64,8 @@ This project provides an automation script to claim Ethereum Sepolia faucet usin
 5. Ensure that the selectors for the input fields and buttons are correct as per the details obtained from the developer tools:
 
    ```javascript
-   await page.type('#walletAddress', walletAddress);
-   await page.evaluate((token) => {
-       document.querySelector('#recaptcha-token').value = token;
-   }, recaptchaToken);
-   await page.click('#claimButton');
+   const walletSelector = '#walletAddress'; // Update the selector to match the correct element
+   const claimButtonSelector = '#claimButton'; // Update the selector to match the correct element
    ```
 
 ## Usage
